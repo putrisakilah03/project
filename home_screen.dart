@@ -2,41 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/screen/add_screen.dart';
 import 'package:todo_list/screen/notes_card.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, String>> _notes = [];
+
+  void _addNote() async {
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => AddScreen()),
+    );
+
+    if (result != null) {
+      setState(() {
+        _notes.add(result);
+      });
+    }
+  }
+
+  void _deleteNote(int index) {
+    setState(() {
+      _notes.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.yellowAccent,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AddScreen(),
-              ),
-            );
-          },
-          backgroundColor: Colors.white,
-          child: const Icon(Icons.add, size: 30, color: Colors.blueGrey),
-        ),
-        appBar: AppBar(
-          title: const Text(
-            'Daftar materi Tugas Kelompok',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+      appBar: AppBar(
+        title: Text('Notes'),
+      ),
+      body: _notes.isEmpty
+          ? Center(
+              child: Text('No notes found.'),
+            )
+          : ListView.builder(
+              itemCount: _notes.length,
+              itemBuilder: (context, index) {
+                return NotesCard(
+                  title: _notes[index]['title']!,
+                  content: _notes[index]['content']!,
+                  onDelete: () => _deleteNote(index),
+                );
+              },
             ),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
-        body: ListView.builder(
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              return NotesCard();
-            }));
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNote,
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
+
