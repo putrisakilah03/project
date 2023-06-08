@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 
 class NotesCard extends StatelessWidget {
-  const NotesCard({super.key});
+  final String title;
+  final String content;
+  final VoidCallback onDelete;
+
+  const NotesCard({
+    required this.title,
+    required this.content,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      padding: const EdgeInsets.all(15),
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Keamanan data dan jaringan",
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            "klik=>Isi Materi",
-            style: const TextStyle(fontSize: 17),
-          ),
-        ],
+    return Card(
+      elevation: 4.0,
+      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(content),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: onDelete,
+        ),
       ),
     );
   }
