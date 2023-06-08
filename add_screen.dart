@@ -1,77 +1,44 @@
 import 'package:flutter/material.dart';
 
 class AddScreen extends StatelessWidget {
-  const AddScreen({super.key});
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
       appBar: AppBar(
-        title: const Text('Data Kelompok 2 Client Server'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        title: Text('Add Note'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 15,
-          left: 15,
-          right: 15,
-          bottom: 80,
-        ),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Judul Tugas',
-                hintStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              onChanged: (value) {},
-            ),
-            Expanded(
-              child: TextField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Materi Tugas Kelompok',
-                  hintStyle: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                onChanged: (value) {},
+              controller: _titleController,
+              decoration: InputDecoration(
+                labelText: 'Title',
               ),
             ),
-            TextButton(
+            SizedBox(height: 16.0),
+            TextField(
+              controller: _contentController,
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                labelText: 'Content',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                final title = _titleController.text;
+                final content = _contentController.text;
+                Navigator.of(context).pop({'title': title, 'content': content});
               },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.only(
-                    left: 30, right: 30, top: 10, bottom: 10),
-                backgroundColor: Colors.white,
-              ),
-              child: const Text('Pilih Materi',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey,
-                  )),
-            )
+              child: Text('Save'),
+            ),
           ],
         ),
       ),
